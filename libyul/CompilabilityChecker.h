@@ -43,7 +43,12 @@ namespace solidity::yul
 class CompilabilityChecker
 {
 public:
-	static std::map<YulString, int> run(
+	struct FunctionStackErrorInfo
+	{
+		int maxDepth;
+		std::set<YulString> variables;
+	};
+	static std::map<YulString, FunctionStackErrorInfo> run(
 		Dialect const& _dialect,
 		Object const& _object,
 		bool _optimizeStackAllocation

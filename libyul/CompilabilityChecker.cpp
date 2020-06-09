@@ -33,7 +33,7 @@ using namespace solidity;
 using namespace solidity::yul;
 using namespace solidity::util;
 
-map<YulString, int> CompilabilityChecker::run(
+map<YulString, CompilabilityChecker::FunctionStackErrorInfo> CompilabilityChecker::run(
 	Dialect const& _dialect,
 	Object const& _object,
 	bool _optimizeStackAllocation
@@ -68,9 +68,13 @@ map<YulString, int> CompilabilityChecker::run(
 			yulAssert(!transform.stackErrors().empty(), "Got stack too deep exception that was not stored.");
 		}
 
-		std::map<YulString, int> functions;
+		std::map<YulString, FunctionStackErrorInfo> functions;
 		for (StackTooDeepError const& error: transform.stackErrors())
-			functions[error.functionName] = max(error.depth, functions[error.functionName]);
+		{
+			auto& functionInfo = functions[error.functionName];
+			functionInfo.maxDepth = max(error.depth, functionInfo.maxDepth);
+			functionInfo.variables.emplace(error.variable);
+		}
 
 		return functions;
 	}
