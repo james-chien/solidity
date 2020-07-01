@@ -52,10 +52,21 @@ string toString(SideEffects const& _sideEffects)
 		ret.emplace_back("sideEffectFree");
 	if (_sideEffects.sideEffectFreeIfNoMSize)
 		ret.emplace_back("sideEffectFreeIfNoMSize");
-	if (_sideEffects.invalidatesStorage)
-		ret.emplace_back("invalidatesStorage");
-	if (_sideEffects.invalidatesMemory)
-		ret.emplace_back("invalidatesMemory");
+	if (!_sideEffects.cannotLoop)
+		ret.emplace_back("can loop");
+	if (_sideEffects.otherState == SideEffects::Write)
+		ret.emplace_back("writes other state");
+	else if (_sideEffects.otherState == SideEffects::Read)
+		ret.emplace_back("reads other state");
+	if (_sideEffects.storage == SideEffects::Write)
+		ret.emplace_back("writes storage");
+	else if (_sideEffects.storage == SideEffects::Read)
+		ret.emplace_back("reads storage");
+	if (_sideEffects.memory == SideEffects::Write)
+		ret.emplace_back("writes memory");
+	else if (_sideEffects.memory == SideEffects::Read)
+		ret.emplace_back("reads memory");
+
 	return joinHumanReadable(ret);
 }
 }

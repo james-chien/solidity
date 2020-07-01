@@ -24,6 +24,7 @@
 #pragma once
 
 #include <libevmasm/Instruction.h>
+#include <libyul/SideEffects.h>
 
 namespace solidity::evmasm
 {
@@ -66,10 +67,9 @@ struct SemanticInformation
 	/// If true, the instruction is still allowed to influence the value returned by the
 	/// msize instruction.
 	static bool sideEffectFreeIfNoMSize(Instruction _instruction);
-	/// @returns true if the given instruction modifies memory.
-	static bool invalidatesMemory(Instruction _instruction);
-	/// @returns true if the given instruction modifies storage (even indirectly).
-	static bool invalidatesStorage(Instruction _instruction);
+	static yul::SideEffects::Effect memory(Instruction _instruction);
+	static yul::SideEffects::Effect storage(Instruction _instruction);
+	static yul::SideEffects::Effect otherState(Instruction _instruction);
 	static bool invalidInPureFunctions(Instruction _instruction);
 	static bool invalidInViewFunctions(Instruction _instruction);
 };

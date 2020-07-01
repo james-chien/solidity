@@ -31,10 +31,10 @@
     }
 }
 // ----
-// : invalidatesStorage, invalidatesMemory
-// f: sideEffectFreeIfNoMSize
-// g: invalidatesStorage, invalidatesMemory
-// h: invalidatesStorage, invalidatesMemory
-// i: invalidatesStorage
+// : writes storage, writes memory
+// f: sideEffectFreeIfNoMSize, reads memory
+// g: writes storage, writes memory
+// h: writes storage, writes memory
+// i: writes storage
 // r: movable, sideEffectFree, sideEffectFreeIfNoMSize
-// t: invalidatesMemory
+// t: writes memory

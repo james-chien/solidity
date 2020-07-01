@@ -4,6 +4,6 @@
   pop(f())
 }
 // ----
-// :
-// f:
-// g:
+// : movable, sideEffectFree, sideEffectFreeIfNoMSize, can loop
+// f: movable, sideEffectFree, sideEffectFreeIfNoMSize, can loop
+// g: movable, sideEffectFree, sideEffectFreeIfNoMSize, can loop

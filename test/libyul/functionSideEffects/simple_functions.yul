@@ -8,7 +8,7 @@
 // ----
 // : movable, sideEffectFree, sideEffectFreeIfNoMSize
 // a: movable, sideEffectFree, sideEffectFreeIfNoMSize
-// f: invalidatesMemory
-// g: invalidatesStorage
-// h: sideEffectFree, sideEffectFreeIfNoMSize
-// i: sideEffectFreeIfNoMSize
+// f: writes memory
+// g: writes storage
+// h: sideEffectFree, sideEffectFreeIfNoMSize, reads memory
+// i: sideEffectFreeIfNoMSize, reads memory

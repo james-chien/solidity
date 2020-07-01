@@ -57,17 +57,19 @@ public:
 	using ASTWalker::operator();
 	void operator()(FunctionCall const& _functionCall) override;
 
-	bool movable() const { return m_sideEffects.movable; }
+	bool movable() const { return cannotLoop() && m_sideEffects.movable; }
 	bool sideEffectFree(bool _allowMSizeModification = false) const
 	{
 		if (_allowMSizeModification)
 			return sideEffectFreeIfNoMSize();
 		else
-			return m_sideEffects.sideEffectFree;
+			return cannotLoop() && m_sideEffects.sideEffectFree;
 	}
-	bool sideEffectFreeIfNoMSize() const { return m_sideEffects.sideEffectFreeIfNoMSize; }
-	bool invalidatesStorage() const { return m_sideEffects.invalidatesStorage; }
-	bool invalidatesMemory() const { return m_sideEffects.invalidatesMemory; }
+	bool cannotLoop() const { return m_sideEffects.cannotLoop; }
+	bool sideEffectFreeIfNoMSize() const { return cannotLoop() && m_sideEffects.sideEffectFreeIfNoMSize; }
+	bool invalidatesStorage() const { return m_sideEffects.storage == SideEffects::Write; }
+	bool invalidatesMemory() const { return m_sideEffects.memory == SideEffects::Write; }
+
 
 private:
 	Dialect const& m_dialect;

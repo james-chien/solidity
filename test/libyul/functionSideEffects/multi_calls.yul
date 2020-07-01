@@ -16,7 +16,7 @@
 }
 // ----
 // : movable, sideEffectFree, sideEffectFreeIfNoMSize
-// a: invalidatesStorage
-// b: invalidatesStorage
-// c: invalidatesStorage, invalidatesMemory
+// a: can loop, writes storage
+// b: can loop, writes storage
+// c: can loop, writes storage, writes memory
 // d: movable, sideEffectFree, sideEffectFreeIfNoMSize

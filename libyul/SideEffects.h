@@ -29,6 +29,20 @@ namespace solidity::yul
  */
 struct SideEffects
 {
+	/// Corresponds to the effect that a YUL-builtin has on a generic data location (storage, memory
+	/// and other blockchain state.)
+	enum Effect
+	{
+		None,
+		Read,
+		Write
+	};
+
+	friend Effect operator+(Effect const& _a, Effect const& _b)
+	{
+		return static_cast<Effect>(std::max(static_cast<int>(_a), static_cast<int>(_b)));
+	}
+
 	/// If true, expressions in this code can be freely moved and copied without altering the
 	/// semantics.
 	/// At statement level, it means that functions containing this code can be
@@ -42,17 +56,16 @@ struct SideEffects
 	/// If true, the code can be removed without changing the semantics as long as
 	/// the whole program does not contain the msize instruction.
 	bool sideEffectFreeIfNoMSize = true;
-	/// If false, storage is guaranteed to be unchanged by the code under all
-	/// circumstances.
-	bool invalidatesStorage = false;
-	/// If false, memory is guaranteed to be unchanged by the code under all
-	/// circumstances.
-	bool invalidatesMemory = false;
+	/// If false, the execution can potentially go in an infinite loop.
+	bool cannotLoop = true;
+	Effect otherState = None;
+	Effect storage = None;
+	Effect memory = None;
 
 	/// @returns the worst-case side effects.
 	static SideEffects worst()
 	{
-		return SideEffects{false, false, false, true, true};
+		return SideEffects{false, false, false, false, Write, Write, Write};
 	}
 
 	/// @returns the combined side effects of two pieces of code.
@@ -62,8 +75,10 @@ struct SideEffects
 			movable && _other.movable,
 			sideEffectFree && _other.sideEffectFree,
 			sideEffectFreeIfNoMSize && _other.sideEffectFreeIfNoMSize,
-			invalidatesStorage || _other.invalidatesStorage,
-			invalidatesMemory || _other.invalidatesMemory
+			cannotLoop && _other.cannotLoop,
+			otherState + _other.otherState,
+			storage + _other.storage,
+			memory +  _other.memory,
 		};
 	}
 
@@ -80,8 +95,9 @@ struct SideEffects
 			movable == _other.movable &&
 			sideEffectFree == _other.sideEffectFree &&
 			sideEffectFreeIfNoMSize == _other.sideEffectFreeIfNoMSize &&
-			invalidatesStorage == _other.invalidatesStorage &&
-			invalidatesMemory == _other.invalidatesMemory;
+			otherState == _other.otherState &&
+			storage == _other.storage &&
+			memory == _other.memory;
 	}
 };
 

@@ -5,6 +5,6 @@
 }
 // ----
 // : movable, sideEffectFree, sideEffectFreeIfNoMSize
-// a:
-// b:
-// c:
+// a: movable, sideEffectFree, sideEffectFreeIfNoMSize, can loop
+// b: movable, sideEffectFree, sideEffectFreeIfNoMSize, can loop
+// c: movable, sideEffectFree, sideEffectFreeIfNoMSize, can loop
