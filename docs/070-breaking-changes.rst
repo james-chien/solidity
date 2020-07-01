@@ -18,3 +18,6 @@ This section gives detailed instructions on how to update prior code for every b
 * Change ``now`` to ``block.timestamp``.
 * Change types of right operand in shift operators to unsigned types. For example change ``x >> (256 - y)`` to
   ``x >> uint(256 - y)``.
+* Any contract that uses internal functions of a library that was made available
+  through a base contract must now explicitly use ``using A for B`` to be able
+  to keep using that library.
