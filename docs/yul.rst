@@ -288,6 +288,7 @@ variables at the same time. For this, the number and types of the
 values have to match.
 If you want to assign the values returned from a function that has
 multiple return parameters, you have to provide multiple variables.
+Assigning to the same variable multiple times, e.g. ``x, x := f()`` is invalid.
 
 .. code-block:: yul
 
@@ -506,6 +507,8 @@ In variable declarations and assignments, the right-hand-side expression
 variables on the left-hand-side.
 This is the only situation where an expression evaluating
 to more than one value is allowed.
+The same variable name cannot occur more than once in the left-hand-side of
+an assignment or variable declaration.
 
 Expressions that are also statements (i.e. at the block level) have to
 evaluate to zero values.

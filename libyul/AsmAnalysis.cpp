@@ -167,6 +167,26 @@ void AsmAnalyzer::operator()(Assignment const& _assignment)
 	size_t const numVariables = _assignment.variableNames.size();
 	yulAssert(numVariables >= 1, "");
 
+	map<YulString, vector<Identifier const*>> variables;
+	for (auto const& _variableName: _assignment.variableNames)
+		variables[_variableName.name].emplace_back(&_variableName);
+
+	for (auto const& [name, occurrences]: variables)
+		if (occurrences.size() > 1)
+		{
+			SecondarySourceLocation ssl;
+			for (auto const* occurrence: occurrences)
+				ssl.append("Variable occurrence", occurrence->location);
+			m_errorReporter.declarationError(
+				9005_error,
+				_assignment.location,
+				ssl,
+				"Variable " +
+				name.str() +
+				" occurs multiple times on the left-hand side of the assignment."
+			);
+		}
+
 	vector<YulString> types = std::visit(*this, *_assignment.value);
 
 	if (types.size() != numVariables)
