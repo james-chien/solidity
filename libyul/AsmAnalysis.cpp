@@ -527,14 +527,14 @@ void AsmAnalyzer::expectValidIdentifier(YulString _identifier, SourceLocation co
 	// NOTE: the leading dot case is handled by the parser not allowing it.
 
 	if (boost::ends_with(_identifier.str(), "."))
-		m_errorReporter.typeError(
+		m_errorReporter.syntaxError(
 			3384_error,
 			_location,
 			"\"" + _identifier.str() + "\" is not a valid identifier (ends with a dot)."
 		);
 
 	if (_identifier.str().find("..") != std::string::npos)
-		m_errorReporter.typeError(
+		m_errorReporter.syntaxError(
 			7771_error,
 			_location,
 			"\"" + _identifier.str() + "\" is not a valid identifier (contains consecutive dots)."
