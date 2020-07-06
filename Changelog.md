@@ -10,6 +10,7 @@ Breaking changes:
  * Type Checker: Exponentiation and shifts of literals by non-literals will always use ``uint256`` or ``int256`` as a type.
  * Type Checker: Disallow structs and arrays in memory or calldata if they contain nested mappings.
  * Type Checker: Disallow assignments to state variables that contain nested mappings.
+ * Type checker: Disallow events with same name and parameter types in inheritance hierarchy.
 
 Language Features:
  * Yul: Disallow EVM instruction `pc()`.
